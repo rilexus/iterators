@@ -1,11 +1,10 @@
-import fetch from 'node-fetch';
-import construct = Reflect.construct;
+const fetch = require('node-fetch');
 
 // --------------Array Iterable--------------
-// const a = [1,2,3];
-// for (let val of a){
-// 	console.log(val);
-// }
+const a = [1,2,3];
+for (let val of a){
+	console.log(val);
+}
 
 //-----------Object Iterable 1--------------
 // const users: any = {
