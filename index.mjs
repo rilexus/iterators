@@ -423,3 +423,37 @@
 // 	console.log('Sum: ', sum);
 // });
 //
+
+
+// ---------------- Async/Await -----------------
+
+const delay = (ms) => new Promise((res)=> setTimeout(res,ms));
+function createFetch() { // fetch data from server 5 times
+	let timesFetched = 0;
+	return async function() {
+		timesFetched++;
+		if (timesFetched >= 5) return; // no more data to fetch
+		console.log('fetching data...');
+		await delay(500);
+		return [1,2,3,4,5]
+
+	}
+}
+
+const fetchData = createFetch();
+
+
+async function* streamingData() {
+	const data = yield fetchData();
+	console.log('awaited data => ', data.value);
+};
+
+const streamingDataGenerator = streamingData();
+const data = streamingDataGenerator.next();
+
+function handleData(data){
+	streamingDataGenerator.next(data);
+}
+data.then(handleData)
+
+console.log('continue execution...');
