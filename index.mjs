@@ -1,13 +1,12 @@
-const fetch = require('node-fetch');
 
 // --------------Array Iterable--------------
-const a = [1,2,3];
-for (let val of a){
-	console.log(val);
-}
+// const a = [1,2,3];
+// for (let val of a){
+// 	console.log(val);
+// }
 
-//-----------Object Iterable 1--------------
-// const users: any = {
+// -----------Object Iterable 1--------------
+// const users = {
 // 	user_1: {
 // 		name: 'Peter'
 // 	},
@@ -23,7 +22,7 @@ for (let val of a){
 // }
 
 // -----------Object Iterable 2--------------
-// const users: any = {
+// const users = {
 // 	user_1: {
 // 		name: 'Peter'
 // 	},
@@ -41,7 +40,7 @@ for (let val of a){
 
 
 // -----------Object Iterable 3--------------
-// const users: any = {
+// const users = {
 // 	user_1: {
 // 		name: 'Peter',
 // 		nick: 'BlueBird'
@@ -71,13 +70,15 @@ for (let val of a){
 // 		}
 // 	}
 // };
-//
-// for (let user of users){
-// 	console.log(user);
-// }
+// const usersIterator = users[Symbol.iterator]();
+// console.log(usersIterator.next());
+// console.log(usersIterator.next());
+// console.log(usersIterator.next());
+// console.log(usersIterator.next());
+
 
 // -----------Object Iterable 4--------------
-// const users: any = {
+// const users = {
 // 	user_1: {
 // 		name: 'Peter',
 // 		nick: 'BlueBird'
@@ -108,12 +109,12 @@ for (let val of a){
 // 	}
 // };
 //
-// const [a,b,c] = users;
-// console.log(a,b,c);
+// const [a,b,...rest] = users;
+// console.log(a,b,...rest);
 
 
 // --------------Iterable Generator-----------
-// const users: any = {
+// const users = {
 // 	user_1: {
 // 		name: 'Peter',
 // 		nick: 'BlueBird'
@@ -136,15 +137,16 @@ for (let val of a){
 // 		}
 // 	}
 // };
-//
-// for (let u of users){
-// 	console.log(u);
-// }
+// const itr = users[Symbol.iterator]();
+// console.log(itr.next());
+// console.log(itr.next());
+// console.log(itr.next());
+// console.log(itr.next());
 
 
 
 // --------------Basic Generator--------------
-// function *basicGenerator(
+// function* basicGenerator(
 // ) {
 // 	yield {
 // 		name: 'Peter',
@@ -161,7 +163,9 @@ for (let val of a){
 // }
 // const iterator = basicGenerator();
 // console.log(iterator.next());
-// console.log(iterator.next().value);
+// console.log(iterator.next());
+// console.log(iterator.next());
+//
 // for (let val of basicGenerator()){
 // 	console.log(val)
 // }
@@ -176,11 +180,10 @@ for (let val of a){
 // }
 //
 // const iterator = infGenerator();
-
-// console.log(iterator.next().value);
-// console.log(iterator.next().value);
-// console.log(iterator.next().value);
-// console.log(iterator.next().value);
+// console.log(iterator.next());
+// console.log(iterator.next());
+// console.log(iterator.next());
+// console.log(iterator.next());
 
 // for (let val of iterator){
 // 	if (val >= 40) iterator.return();
@@ -189,49 +192,42 @@ for (let val of a){
 
 
 // -----------------Range Generator-----------------
-// function *inRange(from: number, to: number) {
-// 	let index = from;
-// 	while (index <=  to){
-// 		yield index++
-// 	}
-// }
-//
-// for (let val of inRange(0,15)){
-// 	console.log(val);
-// }
-
-
-// // -----------------Range with steps Generator-----------------
-// function *inRange(from: number, to: number, step?: number) {
-// 	let index = step ? from - step /*lower bound*/ : from;
-// 	while (index <= (step ? to - step /*upper bound*/ : to)){
+// function* range(from, to, step = 1) {
+// 	let index = from - step; //lower bound
+// 	while (index <= to - step /*upper bound*/){
 // 		yield step ? index = index + step : index++
 // 	}
 // }
 //
-// for (let val of inRange(0,10, 2)){
+// for (let val of range(0,10)){
 // 	console.log(val);
 // }
 
-
-// ---------------- Iterator return & done value
-// function* inRange(from: number, to: number, step?: number) {
-// 	let index = step ? from - step /*lower bound*/ : from;
-// 	while (index <= (step ? to - step /*upper bound*/ : to)){
-// 		yield step ? index = index + step : index++
+// ----------------- Fibo -------------
+// function* fibonacci() {
+// 	let fn1 = 0;
+// 	let fn2 = 1;
+// 	while (true) {
+// 		let current = fn1;
+// 		fn1 = fn2;
+// 		fn2 = current + fn1;
+// 		yield current;
 // 	}
 // }
-// const iterator = inRange(0,2, 1)
-// console.log(iterator.next())
-// console.log(iterator.next())
-// console.log(iterator.next())
-// console.log(iterator.next())
-// console.log(iterator.next())
+// const sequence = fibonacci();
+// console.log(sequence.next());
+// console.log(sequence.next());
+// console.log(sequence.next());
+// console.log(sequence.next());
+// console.log(sequence.next());
+// console.log(sequence.next());
+// console.log(sequence.next());
+
 
 
 // -----------Async Iterable --------------
-// const delay = (ms:number) => new Promise((res)=> setTimeout(res,ms));
-// const users: any = {
+// const delay = (ms) => new Promise((res)=> setTimeout(res,ms));
+// const users = {
 // 	user_1: {
 // 		name: 'Peter',
 // 		nick: 'BlueBird'
@@ -264,15 +260,15 @@ for (let val of a){
 // };
 //
 // (async function () {
-// 	for await (const u of users){
-// 		console.log(u);
+// 	for await (const user of users){
+// 		console.log(user);
 // 	}
 // })();
 
 
 // -------------------Async Generator---------------------
-// const delay = (ms:number) => new Promise((res)=> setTimeout(res,ms));
-// const users: any = {
+// const delay = (ms) => new Promise((res)=> setTimeout(res,ms));
+// const users = {
 // 	user_1: {
 // 		name: 'Peter',
 // 		nick: 'BlueBird'
@@ -286,7 +282,7 @@ for (let val of a){
 // 		nick: 'FuckBird'
 // 	},
 //
-// 	[Symbol.asyncIterator]: async function*(){ // async
+// 	[Symbol.asyncIterator]: async function* (){ // async
 // 		let idx = -1;
 // 		const keys = Object.keys(this);
 // 		while (idx < keys.length -1) {
@@ -298,8 +294,8 @@ for (let val of a){
 // };
 //
 // (async function () {
-// 	for await (const u of users){
-// 		console.log(u);
+// 	for await (const user of users){
+// 		console.log(user);
 // 	}
 // })();
 
@@ -312,9 +308,7 @@ for (let val of a){
 // 			return {
 // 				next: function () {
 // 					idx++;
-// 					if (idx === array.length){
-// 						array = [...array, 1,2,3]
-// 					}
+// 					if (idx === array.length) array = [...array, 1,2,3];
 // 					return {
 // 						value: array[idx],
 // 						done: false
@@ -336,15 +330,20 @@ for (let val of a){
 
 
 // --------------------Streaming Data Iterator-------------------------
-// const delay = (ms:number) => new Promise((res)=> setTimeout(res,ms));
-// let timesFetched = 0;
-// async function fetchData() { // fetch data from server 5 times
-// 	timesFetched++;
-// 	if (timesFetched >= 5) return; // no more data to fetch
-// 	console.log('fetching data...');
-// 	await delay(500);
-// 	return [1,2,3,4,5]
+// const delay = (ms) => new Promise((res)=> setTimeout(res,ms));
+// function createFetch() { // fetch data from server 5 times
+// 	let timesFetched = 0;
+// 	return async function() {
+// 		timesFetched++;
+// 		if (timesFetched >= 5) return; // no more data to fetch
+// 		console.log('fetching data...');
+// 		await delay(500);
+// 		return [1,2,3,4,5]
+//
+// 	}
 // }
+//
+// const fetchData = createFetch();
 //
 // function streamingData(){ // return streaming data
 // 	const iterator = {
@@ -363,8 +362,8 @@ for (let val of a){
 // 	};
 // 	return iterator[Symbol.asyncIterator]();
 // }
-
-// async function handleData(data:any){
+//
+// async function handleData(data){
 // 	let sum = 0;
 // 	for await (const v of data){
 // 		await delay(200);
@@ -376,49 +375,51 @@ for (let val of a){
 // }
 //
 // const data = streamingData();
-// handleData(data).then((sum:number) => {
+// handleData(data).then((sum) => {
 // 	console.log('Sum: ', sum);
 // });
 
 
-// --------------------Streaming Data Generator ----------------------
-// const delay = (ms:number) => new Promise((res)=> setTimeout(res,ms));
-// let timesFetched = 0;
-// async function fetchData() { // fetch data from server 5 times
-// 	timesFetched++;
-// 	if (timesFetched >= 5) return; // no more data to fetch
-// 	console.log('fetching data...');
-// 	await delay(500);
-// 	return [1,2,3,4,5]
-// }
+// ---------------- Async Generator ----------------------
+// const delay = (ms) => new Promise((res)=> setTimeout(res,ms));
+// function createFetch() { // fetch data from server 5 times
+// 	let timesFetched = 0;
+// 	return async function() {
+// 		timesFetched++;
+// 		if (timesFetched >= 5) return; // no more data to fetch
+// 		console.log('fetching data...');
+// 		await delay(500);
+// 		return [1,2,3,4,5]
 //
-//
-// async function* streamingDataGenerator(){
-// 	let cache = null;
-// 	while (true) {
-// 		cache = await fetchData();
-// 		if (!cache) return;
-//
-// 		for (const d of cache){
-// 			yield d;
-// 		}
 // 	}
 // }
 //
-// async function handleData(data:any){
+// const fetchData = createFetch();
+//
+// async function*  streamingData() {
+// 	while (true) {
+// 		const data = await fetchData();
+// 		if (!data) return;
+// 		yield data
+// 	}
+// }
+//
+//
+// async function handleData(data){
 // 	let sum = 0;
-// 	for await (const v of data){
+// 	for await (const numbers of data){
 // 		await delay(200);
-// 		sum = sum + v;
-// 		console.log(v)
+// 		for (const num of numbers){
+// 			console.log(num);
+// 			sum = sum + num;
+// 		}
 // 	}
 // 	console.log('done!');
 // 	return sum;
 // }
 //
-// const data = streamingDataGenerator();
-// handleData(data).then((sum:number) => {
+// const data = streamingData();
+// handleData(data).then((sum) => {
 // 	console.log('Sum: ', sum);
 // });
 //
-
