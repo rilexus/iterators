@@ -430,7 +430,7 @@
 //
 
 
-// ---------------- Async/Await -----------------
+// ---------------- Async/Await (kind of) -----------------
 
 // const delay = (ms) => new Promise((res)=> setTimeout(res,ms));
 // function createFetch() { // fetch data from server 5 times
@@ -462,3 +462,33 @@
 // data.then(handleData)
 //
 // console.log('continue execution...');
+
+
+// ---------------- Async/Await -----------------
+function applyGenerator(generator) {
+	const it = generator();
+	return function nextOnGenerator(){
+		return it.next.apply(it, arguments);
+	}
+}
+
+
+function fetch(url) {
+	const time = Math.random() * 300;
+	setTimeout(()=>{
+		const data = {
+			body: time,
+			url: url
+		};
+		run(data)
+	},time)
+}
+
+const run  = applyGenerator(function* () {
+	const data = yield fetch('file1');
+	console.log('data: ', data);
+	const data2 = yield fetch('file2');
+	console.log('data2: ', data2);
+});
+
+run()
