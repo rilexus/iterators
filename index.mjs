@@ -42,32 +42,44 @@
 // 	console.log(u);
 // }
 
+// -----------Object Iterable 2a--------------
+// const users = {
+// 	user_1: {
+// 		name: 'Peter'
+// 	},
+// 	user_2: {
+// 		name: 'Paul'
+// 	},
+// 	user_3: {
+// 		name: 'Dimitry'
+// 	}
+// };
+// for (let key_index in users){
+// 	console.log(users[key_index]);
+// }
 
 
 // -----------Object Iterable 3--------------
 // const users = {
 // 	user_1: {
 // 		name: 'Peter',
-// 		nick: 'BlueBird'
 // 	},
 // 	user_2: {
 // 		name: 'Paul',
-// 		nick: 'RedBird'
 // 	},
 // 	user_3: {
 // 		name: 'Dimitry',
-// 		nick: 'FuckBird'
 // 	},
 //
 // 	[Symbol.iterator]: function(){
-// 		const host = this; // users
-// 		const keys = Object.keys(host);
+// 		const self = this; // users
+// 		const keys = Object.keys(self);
 // 		let idx = -1;
 // 		return {
 // 			next: function () {
 // 				idx++;
 // 				if (idx < keys.length) return {
-// 					value: host[keys[idx]],
+// 					value: self[keys[idx]],
 // 					done: false
 // 				};
 // 				return {done: true}
@@ -86,26 +98,27 @@
 // const users = {
 // 	user_1: {
 // 		name: 'Peter',
-// 		nick: 'BlueBird'
 // 	},
 // 	user_2: {
 // 		name: 'Paul',
-// 		nick: 'RedBird'
 // 	},
 // 	user_3: {
 // 		name: 'Dimitry',
-// 		nick: 'FuckBird'
+// 	},
+// 	user_4: {
+// 		name: 'Lara',
 // 	},
 //
 // 	[Symbol.iterator]: function(){
-// 		const host = this; // users
-// 		const keys = Object.keys(host);
+// 		const self = this; // users
+// 		const keys = Object.keys(self);
 // 		let idx = -1;
 // 		return {
 // 			next: function () {
 // 				idx++;
+// 				const key = keys[idx];
 // 				if (idx < keys.length) return {
-// 					value: host[keys[idx]],
+// 					value: self[key],
 // 					done: false
 // 				};
 // 				return {done: true}
@@ -115,22 +128,21 @@
 // };
 //
 // const [a,b,...rest] = users;
-// console.log(a,b,...rest);
+// console.log(a);
+// console.log(b);
+// console.log(...rest);
 
 
 // --------------Iterable Generator-----------
 // const users = {
 // 	user_1: {
 // 		name: 'Peter',
-// 		nick: 'BlueBird'
 // 	},
 // 	user_2: {
 // 		name: 'Paul',
-// 		nick: 'RedBird'
 // 	},
 // 	user_3: {
 // 		name: 'Dimitry',
-// 		nick: 'FuckBird'
 // 	},
 //
 // 	[Symbol.iterator]: function* (){
@@ -171,7 +183,7 @@
 // console.log(iterator.next());
 // console.log(iterator.next());
 //
-// for (let val of basicGenerator()){
+// for (let val of iterator){
 // 	console.log(val)
 // }
 
@@ -179,9 +191,7 @@
 // -----------------Infinity-----------------
 // function * infGenerator() {
 // 	let index = 0;
-// 	while (true){
-// 		yield index++;
-// 	}
+// 	while (true) yield index++;
 // }
 //
 // const iterator = infGenerator();
@@ -189,9 +199,9 @@
 // console.log(iterator.next());
 // console.log(iterator.next());
 // console.log(iterator.next());
-
+//
 // for (let val of iterator){
-// 	if (val >= 40) iterator.return();
+// 	if (val >= 10) iterator.return();
 // 	console.log(val);
 // }
 
@@ -204,8 +214,8 @@
 // 	}
 // }
 //
-// for (let val of range(0,10)){
-// 	console.log(val);
+// for (let number of range(0,10)){
+// 	console.log(number);
 // }
 
 // ----------------- Fibo -------------
@@ -214,12 +224,13 @@
 // 	let fn2 = 1;
 // 	while (true) {
 // 		let current = fn1;
+// 		yield current;
 // 		fn1 = fn2;
 // 		fn2 = current + fn1;
-// 		yield current;
 // 	}
 // }
 // const sequence = fibonacci();
+//
 // console.log(sequence.next());
 // console.log(sequence.next());
 // console.log(sequence.next());
@@ -231,31 +242,29 @@
 
 
 // -----------Async Iterable --------------
-// const delay = (ms) => new Promise((res)=> setTimeout(res,ms));
+// const delay = (ms) => new Promise(resolve=> setTimeout(resolve,ms));
 // const users = {
 // 	user_1: {
 // 		name: 'Peter',
-// 		nick: 'BlueBird'
 // 	},
 // 	user_2: {
 // 		name: 'Paul',
-// 		nick: 'RedBird'
 // 	},
 // 	user_3: {
 // 		name: 'Dimitry',
-// 		nick: 'FuckBird'
 // 	},
 //
 // 	[Symbol.asyncIterator]: function(){ // async
-// 		const host = this; // users
-// 		const keys = Object.keys(host);
+// 		const users = this;
+// 		const keys = Object.keys(users);
 // 		let idx = -1;
 // 		return {
 // 			next: async function () {
 // 				await delay(1000);
 // 				idx++;
+// 				const key = keys[idx];
 // 				if (idx < keys.length) return {
-// 					value: host[keys[idx]],
+// 					value: users[key],
 // 					done: false
 // 				};
 // 				return {done: true}
@@ -263,6 +272,7 @@
 // 		}
 // 	}
 // };
+//
 //
 // (async function () {
 // 	for await (const user of users){
@@ -305,8 +315,9 @@
 // })();
 
 // ------------ Infinite Iteration Source-----------------
-// let array = [1,2,3];
-// function createIterable() {
+// function createIterator() {
+// 	let array = [1,2,3];
+//
 // 	const iterator = {
 // 		[Symbol.iterator]: function(){
 // 			let idx = -1;
@@ -322,9 +333,14 @@
 // 			}
 // 		}
 // 	};
+//
 // 	return iterator[Symbol.iterator]()
 // }
-// const iterator = createIterable();
+// const iterator = createIterator();
+// console.log(iterator.next().value);
+// console.log(iterator.next().value);
+// console.log(iterator.next().value);
+// console.log(iterator.next().value);
 // console.log(iterator.next().value);
 // console.log(iterator.next().value);
 // console.log(iterator.next().value);
@@ -336,6 +352,7 @@
 
 // --------------------Streaming Data Iterator-------------------------
 // const delay = (ms) => new Promise((res)=> setTimeout(res,ms));
+//
 // function createFetch() { // fetch data from server 5 times
 // 	let timesFetched = 0;
 // 	return async function() {
@@ -380,6 +397,7 @@
 // }
 //
 // const data = streamingData();
+//
 // handleData(data).then((sum) => {
 // 	console.log('Sum: ', sum);
 // });
@@ -409,7 +427,6 @@
 // 	}
 // }
 //
-//
 // async function handleData(data){
 // 	let sum = 0;
 // 	for await (const numbers of data){
@@ -432,63 +449,106 @@
 
 // ---------------- Async/Await (kind of) -----------------
 
-// const delay = (ms) => new Promise((res)=> setTimeout(res,ms));
-// function createFetch() { // fetch data from server 5 times
-// 	let timesFetched = 0;
-// 	return async function() {
-// 		timesFetched++;
-// 		if (timesFetched >= 5) return; // no more data to fetch
-// 		console.log('fetching data...');
-// 		await delay(500);
-// 		return [1,2,3,4,5]
+// const fetch = () => new Promise(resolve => {
+// 	const time = 3000;
+// 	console.log('fetching data...');
+// 	setTimeout(()=>resolve({time}),time)
+//
+// });
+//
+// async function* dataGenerator() {
+// 	const data = yield fetch();
+// 	console.log('got data from server => ', data.value);
+// };
+//
+//
+// const dataIterator = dataGenerator();
+// const dataPromise = dataIterator.next();
+// dataPromise.then(handleData)
+// function handleData(data){
+// 	dataIterator.next(data);
+// }
+//
+//
+// console.log('continue execution while still fetching...');
+
+
+// ---------------- Async/Await (almost) -----------------
+// function fetch(url) {
+// 	const time = Math.random() * 2000;
+// 	setTimeout(()=>{
+// 		run({
+// 			time,
+// 			url
+// 		})
+// 	},time)
+// }
+//
+// function applyGenerator(generator) {
+// 	const iterator = generator();
+// 	// call run to call it.next
+// 	return function run(){
+// 		return iterator.next.apply(iterator, arguments);
+// 	}
+// }
+//
+// const run  = applyGenerator(function* () {
+// 	const data = yield fetch('file1');
+// 	console.log('data: ', data);
+//
+// 	const data2 = yield fetch('file2');
+// 	console.log('data2: ', data2);
+//
+// 	const data3 = yield fetch('file3');
+// 	console.log('data3: ', data3);
+//
+// });
+// run();
+
+
+
+// ------------------ Async/Await 🎉🎊------------------
+// const timerStart = console.time;
+// const timerEnd = console.timeEnd;
+// const timerLabel = 'fetching of data3 took: ';
+// function fetch(url) {
+// 	return new Promise(resolve => {
+// 		const time = Math.random() * 2000;
+// 		setTimeout(() => {
+// 			resolve({
+// 				time,
+// 				url
+// 			})
+// 		}, time)
+// 	})
+// }
+//
+// class Run {
+// 	static async(generator) {
+//
+//
+// 		function run(iterator, data) {
+// 			const {value: fetch} = iterator.next(data);
+// 			fetch && fetch.then(function chain(_data){
+// 				run(iterator, _data);
+// 			})
+// 		}
+//
+// 		run(generator());
 //
 // 	}
 // }
 //
-// const fetchData = createFetch();
 //
+// Run.async(function* () {
+// 	const data = yield fetch('file1');
+// 	console.log('data: ', data);
 //
-// async function* streamingData() {
-// 	const data = yield fetchData();
-// 	console.log('awaited data => ', data.value);
-// };
+// 	const data2 = yield fetch('file2');
+// 	console.log('data2: ', data2);
 //
-// const streamingDataGenerator = streamingData();
-// const data = streamingDataGenerator.next();
-//
-// function handleData(data){
-// 	streamingDataGenerator.next(data);
-// }
-// data.then(handleData)
-//
-// console.log('continue execution...');
-
-
-// ---------------- Async/Await -----------------
-function applyGenerator(generator) {
-	const it = generator();
-	return function nextOnGenerator(){
-		return it.next.apply(it, arguments);
-	}
-}
-
-
-function fetch(url) {
-	const time = Math.random() * 300;
-	setTimeout(()=>{
-		const data = {
-			body: time,
-			url: url
-		};
-		run(data)
-	},time)
-}
-
-const run  = applyGenerator(function* () {
-	const data = yield fetch('file1');
-	console.log('data: ', data);
-	const data2 = yield fetch('file2');
-	console.log('data2: ', data2);
-});
-
-run()
+// 	timerStart(timerLabel);
+// 	const data3 = yield fetch('file3');
+// 	console.log('data3: ', data3);
+// 	timerEnd(timerLabel)
+// });
