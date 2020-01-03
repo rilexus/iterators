@@ -477,24 +477,23 @@ function fetch(url) {
 }
 
 class Async {
-	static awaitYield(generator) {
+	static awaitPromise(fromGenerator) {
 
-		function callNext(iterator, data) {
-			const {value: promise} = iterator.next(data); // pass data back to generator
+		function callNext(iterator, withData) {
+			const {value: promise} = iterator.next(withData); // pass data back to generator
 
 			promise && promise.then(function chain(_data){
 				callNext(iterator, _data);
 			})
 
 		}
-
-		callNext(generator(), null);
+		const iterator = fromGenerator()
+		callNext(iterator, null);
 
 	}
 }
 
-
-Async.awaitYield(function* () {
+Async.awaitPromise(function* () {
 	timerStart(timerLabel);
 
 	const data = yield fetch('file1');
