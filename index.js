@@ -460,52 +460,52 @@ emptyLines(15);
 
 
 // ------------------ Async/Await 🎉🎊------------------
-const timerStart = console.time;
-const timerEnd = console.timeEnd;
-const timerLabel = 'fetching of data took: ';
-
-function fetch(url) {
-	return new Promise(resolve => {
-		const time = Math.random() * 2000;
-		setTimeout(() => {
-			resolve({
-				time,
-				url
-			})
-		}, time)
-	})
-}
-
-class Async {
-	static awaitPromise(fromGenerator) {
-
-		function callNext(iterator, withData) {
-			const {value: promise} = iterator.next(withData); // pass data back to generator
-
-			promise && promise.then(function chain(_data){
-				callNext(iterator, _data);
-			})
-
-		}
-		const iterator = fromGenerator()
-		callNext(iterator, null);
-
-	}
-}
-
-Async.awaitPromise(function* () {
-	timerStart(timerLabel);
-
-	const data = yield fetch('file1');
-	console.log('data: ', data);
-
-	const data2 = yield fetch('file2');
-	console.log('data2: ', data2);
-
-	const data3 = yield fetch('file3');
-	console.log('data3: ', data3);
-	timerEnd(timerLabel)
-});
-console.log('continue execution while still fetching...');
+// const timerStart = console.time;
+// const timerEnd = console.timeEnd;
+// const timerLabel = 'fetching of data took: ';
+//
+// function fetch(url) {
+// 	return new Promise(resolve => {
+// 		const time = Math.random() * 2000;
+// 		setTimeout(() => {
+// 			resolve({
+// 				time,
+// 				url
+// 			})
+// 		}, time)
+// 	})
+// }
+//
+// class Async {
+// 	static awaitPromise(fromGenerator) {
+//
+// 		function callNext(iterator, withData) {
+// 			const {value: promise} = iterator.next(withData); // pass data back to generator
+//
+// 			promise && promise.then(function chain(_data){
+// 				callNext(iterator, _data);
+// 			})
+//
+// 		}
+// 		const iterator = fromGenerator()
+// 		callNext(iterator, null);
+//
+// 	}
+// }
+//
+// Async.awaitPromise(function* () {
+// 	timerStart(timerLabel);
+//
+// 	const data = yield fetch('file1');
+// 	console.log('data: ', data);
+//
+// 	const data2 = yield fetch('file2');
+// 	console.log('data2: ', data2);
+//
+// 	const data3 = yield fetch('file3');
+// 	console.log('data3: ', data3);
+// 	timerEnd(timerLabel)
+// });
+// console.log('continue execution while still fetching...');
 
 emptyLines(3);
