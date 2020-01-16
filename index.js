@@ -3,11 +3,12 @@ const delay = require('./utils/delay');
 
 emptyLines(15);
 
+// 1. iterate and compute data on a datastructure
+
 // const a = [1,2,3];
 // for (let i = 0; i < a.length; i++){
 // 	console.log(a[i]);
 // }
-
 
 // const array = [1,2,3];
 // for (let value of array){
@@ -26,7 +27,7 @@ emptyLines(15);
 // 		name: 'Dimitry'
 // 	}
 // };
-// for (let u of users){
+// for (let u in users){
 // 	console.log(u);
 // }
 
@@ -44,9 +45,27 @@ emptyLines(15);
 // };
 // for (let key in users){
 // 	const value = users[key];
-// 	console.log(`key: ${key};`, 'value: ', value);
+// 	console.log(value);
+// }
+// for (let value of users){
+// 	console.log(value);
 // }
 
+
+// const users = {
+// 	user_1: {
+// 		name: 'Peter'
+// 	},
+// 	user_2: {
+// 		name: 'Paul'
+// 	},
+// 	user_3: {
+// 		name: 'Dimitry'
+// 	}
+// };
+// for (let value of users){
+// 	console.log(value);
+// }
 
 // const users = {
 // 	user_1: {
@@ -91,7 +110,7 @@ emptyLines(15);
 // 	console.log(value)
 // }
 
-// const [firstUser,secondUser,...otherUsers] = users;
+// const [firstUser, secondUser, ...otherUsers] = users;
 // console.log(firstUser);
 // console.log(secondUser);
 // console.log(otherUsers);
@@ -102,6 +121,45 @@ emptyLines(15);
 // console.log(userIterator.next());
 // console.log(userIterator.next());
 // console.log(userIterator.next());
+
+
+// ------------ Infinite Iteration Source-----------------
+// const infiniteIterator = {
+//
+// 	value: 'I dont care about!',
+//
+// 	[Symbol.iterator]: function () {
+// 		let array = [1,2,3];
+// 		let idx = -1;
+//
+// 		return {
+// 			next: function () {
+// 				idx++;
+// 				if (idx === array.length) {
+// 					array = [...array, 1,2,3];
+// 					console.log('--------------')
+// 				}
+//
+// 				const value = array[idx]; // never out of bounds
+//
+// 				return {
+// 					value: value,
+// 					done: false
+// 				}
+// 			}
+// 		}
+// 	}
+// };
+// const iterator = infiniteIterator[Symbol.iterator]();
+// console.log(iterator.next());
+// console.log(iterator.next());
+// console.log(iterator.next());
+// console.log(iterator.next());
+// console.log(iterator.next());
+
+// for (let value of infiniteIterator){
+// 	console.log(value)
+// }
 
 
 // function* basicGenerator(){
@@ -118,22 +176,59 @@ emptyLines(15);
 // 		name: 'Dimitry',
 // 	}
 // }
-// const basicIterator = basicGenerator(); // [Symbol.iterator]()
+//
+// const basicIterator = basicGenerator(); // always returns iterator [Symbol.iterator]()
+// // {next: ()=>{return {value: undefined, done: true}}}
 // console.log(basicIterator.next());
 // console.log(basicIterator.next());
 // console.log(basicIterator.next());
 // console.log(basicIterator.next());
 // console.log(basicIterator.next());
+// console.log(basicIterator.next());
+
 
 // for (let val of basicIterator){
 // 	console.log(val)
 // }
 
 
+// const users = {
+// 	user_1: {
+// 		name: 'Peter',
+// 	},
+// 	user_2: {
+// 		name: 'Paul',
+// 	},
+// 	user_3: {
+// 		name: 'Dimitry',
+// 	},
+// 	user_4: {
+// 		name: 'Dimitry',
+// 	},
+// };
+//
+// function* makeIterable(object) {
+// 	const keys = Object.keys(object);
+// 	let idx= -1;
+//
+// 	while (idx < keys.length){
+// 		idx++;
+// 		yield object[keys[idx]]
+// 	}
+// }
+//
+// for (let value of makeIterable(users)){
+// 	console.log(value)
+// }
+
+
+
 // -----------------Infinity-----------------
-// function * infGenerator() {
+// function* infGenerator() {
 // 	let index = 0;
-// 	while (true) yield index++;
+// 	while (true) { // is not stuck here
+// 		yield index++; // {value: index, done: false}
+// 	}
 // }
 // const iterator = infGenerator();
 
@@ -141,7 +236,14 @@ emptyLines(15);
 // console.log(iterator.next());
 // console.log(iterator.next());
 // console.log(iterator.next());
+// console.log(iterator.next());
+// console.log(iterator.next());
+// console.log(iterator.next());
 
+// for (let val of iterator){
+// 	console.log(val);
+// }
+//
 // for (let val of iterator){
 // 	if (val >= 10) iterator.return();
 // 	console.log(val);
@@ -158,8 +260,8 @@ emptyLines(15);
 // 		yield step ? index = index + step : index++
 // 	}
 // }
-
-// for (let number of inRange(0,10)){
+//
+// for (let number of inRange(5,10)){
 // 	console.log(number);
 // }
 
@@ -176,6 +278,8 @@ emptyLines(15);
 // 	}
 // }
 // const sequence = fibonacci();
+//
+//
 // for (let fibNumber of sequence){
 // 	if (fibNumber <= 13) console.log(fibNumber);
 // 	else sequence.return();
@@ -193,7 +297,7 @@ emptyLines(15);
 // 		name: 'Dimitry',
 // 	},
 //
-// 	[Symbol.iterator]: function* (){
+// 	[Symbol.iterator]: function* (){ // returns iterator
 // 		let idx = -1;
 // 		const users = this;
 // 		const keys = Object.keys(users);
@@ -206,8 +310,9 @@ emptyLines(15);
 // 		}
 // 	}
 // };
-// const itr = users[Symbol.iterator]();
 
+// const itr = users[Symbol.iterator]();
+//
 // console.log(itr.next());
 // console.log(itr.next());
 // console.log(itr.next());
@@ -297,49 +402,6 @@ emptyLines(15);
 
 
 
-// ------------ Infinite Iteration Source-----------------
-// const infiniteIterator = {
-// 	[Symbol.iterator]: function () {
-// 		let array = [1,2,3];
-// 		let idx = -1;
-//
-// 		return {
-// 			next: function () {
-// 				idx++;
-// 				if (idx === array.length) {
-// 					array = [...array, 1,2,3];
-// 					console.log('--------------')
-// 				}
-//
-// 				const value = array[idx]; // never out of bounds
-//
-// 				return {
-// 					value: value,
-// 					done: false
-// 				}
-// 			}
-// 		}
-// 	}
-// };
-// const iterator = infiniteIterator[Symbol.iterator]();
-// console.log(iterator.next().value);
-// console.log(iterator.next().value);
-// console.log(iterator.next().value);
-// console.log(iterator.next().value);
-// console.log(iterator.next().value);
-// console.log(iterator.next().value);
-// console.log(iterator.next().value);
-// console.log(iterator.next().value);
-// console.log(iterator.next().value);
-// console.log(iterator.next().value);
-// console.log(iterator.next().value);
-// console.log(iterator.next().value);
-
-// for (let o of infiniteIterator){
-// 	console.log(o)
-// }
-
-
 // --------------------Streaming Data Iterator-------------------------
 // function server() { // simulate a data source (server)
 // 	let timesFetched = 0;
@@ -355,9 +417,9 @@ emptyLines(15);
 // 		return [1,2,3,4,5];
 // 	}
 // }
-
+//
 // const fetch = server(); // returns Array<number> 5 times
-
+//
 // async function* dataGenerator (){
 // 	let data = [];
 // 	while (true) {
@@ -411,7 +473,7 @@ emptyLines(15);
 // const dataIterator = dataGenerator(); // init generator
 // const dataPromise = dataIterator.next(); // yield promise
 //
-// dataPromise.then(handleData); // await resolve
+// dataPromise.then((data)=>handleData(data)); // await resolve
 //
 // function handleData(data){
 // 	dataIterator.next(data); // pass data back to generator => generator "awaited" data
@@ -442,7 +504,7 @@ emptyLines(15);
 // 	}
 // }
 //
-// const callNext  = awaitYield(function* () {
+// const callNext = awaitYield(function* () {
 // 	// await data in order
 // 	const data = yield fetch('/file1', callNext);
 // 	console.log('data: ', data);
@@ -481,17 +543,17 @@ emptyLines(15);
 //
 // 		function callNext(iterator, withData) {
 // 			const {value: promise} = iterator.next(withData); // pass data back to generator
-//
 // 			promise && promise.then(function chain(_data){
 // 				callNext(iterator, _data);
 // 			})
-//
 // 		}
-// 		const iterator = fromGenerator()
+//
+// 		const iterator = fromGenerator();
 // 		callNext(iterator, null);
 //
 // 	}
 // }
+//
 //
 // Async.awaitPromise(function* () {
 // 	timerStart(timerLabel);
