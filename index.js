@@ -3,7 +3,6 @@ const delay = require('./utils/delay');
 
 emptyLines(15);
 
-// 1. iterate and compute data on a datastructure
 
 // const a = [1,2,3];
 // for (let i = 0; i < a.length; i++){
@@ -44,13 +43,10 @@ emptyLines(15);
 // 	}
 // };
 // for (let key in users){
+//  // Same shit different code: https://i.giphy.com/media/euna4DA7PXW9MTE5Dq/giphy.webp
 // 	const value = users[key];
 // 	console.log(value);
 // }
-// for (let value of users){
-// 	console.log(value);
-// }
-
 
 // const users = {
 // 	user_1: {
@@ -67,6 +63,7 @@ emptyLines(15);
 // 	console.log(value);
 // }
 
+// // There is a way: https://www.mememaker.net/api/bucket?path=static/img/memes/full/2012/Jun/29/10/what-if-i-told-you.jpg
 // const users = {
 // 	user_1: {
 // 		name: 'Peter',
@@ -91,7 +88,9 @@ emptyLines(15);
 // 			next: () => {
 // 				idx++;
 //
-// 				if (idx >= keys.length) return {value: undefined, done: true};
+// 				if (idx >= keys.length) {
+//           return {value: undefined, done: true};
+//         }
 //
 // 				const key = keys[idx];
 // 				const value = users[key];
@@ -105,12 +104,13 @@ emptyLines(15);
 //
 // 	}
 // };
-
 // for (let value of users){
 // 	console.log(value)
 // }
+// // Easy: https://i.giphy.com/media/zcCGBRQshGdt6/source.gif
 
 // const [firstUser, secondUser, ...otherUsers] = users;
+// // Interesting: https://i.giphy.com/media/3oKIPlLZEbEbacWqOc/source.gif
 // console.log(firstUser);
 // console.log(secondUser);
 // console.log(otherUsers);
@@ -123,7 +123,7 @@ emptyLines(15);
 // console.log(userIterator.next());
 
 
-// ------------ Infinite Iteration Source-----------------
+
 // const infiniteIterator = {
 //
 // 	value: 'I dont care about!',
@@ -157,6 +157,7 @@ emptyLines(15);
 // console.log(iterator.next());
 // console.log(iterator.next());
 
+// // Cake: https://media.giphy.com/media/5eFSczxieif5BZIACm/source.gif
 // for (let value of infiniteIterator){
 // 	console.log(value)
 // }
@@ -177,15 +178,14 @@ emptyLines(15);
 // 	}
 // }
 //
-// const basicIterator = basicGenerator(); // always returns iterator [Symbol.iterator]()
+// const basicIterator = basicGenerator(); // implicit iterator [Symbol.iterator]()
 // // {next: ()=>{return {value: undefined, done: true}}}
+// // Similar: https://i.giphy.com/media/iGXpb2gJM3JkQXfBXv/source.gif
 // console.log(basicIterator.next());
 // console.log(basicIterator.next());
 // console.log(basicIterator.next());
 // console.log(basicIterator.next());
 // console.log(basicIterator.next());
-// console.log(basicIterator.next());
-
 
 // for (let val of basicIterator){
 // 	console.log(val)
@@ -226,7 +226,7 @@ emptyLines(15);
 // -----------------Infinity-----------------
 // function* infGenerator() {
 // 	let index = 0;
-// 	while (true) { // is not stuck here
+// 	while (true) { // https://i.giphy.com/media/9Vkm7LGgrPTcA345Sb/source.gif
 // 		yield index++; // {value: index, done: false}
 // 	}
 // }
@@ -264,7 +264,7 @@ emptyLines(15);
 // for (let number of inRange(5,10)){
 // 	console.log(number);
 // }
-
+// // https://i.giphy.com/media/UVk5yzljef0kGiayL1/source.gif
 
 // ----------------- Fibonacci -------------
 // function* fibonacci(first = 0, second = 1) {
@@ -276,6 +276,7 @@ emptyLines(15);
 // 		fn1 = fn2;
 // 		fn2 = fibNumber + fn1;
 // 	}
+//  // https://i.giphy.com/media/W3a0zO282fuBpsqqyD/source.mp4
 // }
 // const sequence = fibonacci();
 //
@@ -441,7 +442,7 @@ emptyLines(15);
 // 	for await (const dataUnit of asyncData){
 // 		console.log(`process data unit: ${dataUnit}`);
 //
-// 		await delay(200); // simulate long running process
+// 		await delay(200); // long running task
 //
 // 		// do something with the data unit
 // 		sum = sum + dataUnit;
@@ -451,40 +452,36 @@ emptyLines(15);
 //
 // processData(dataGenerator).then((processResult) => {
 // 	console.log('Sum: ', processResult);
+//  // https://i.giphy.com/media/QsJc1iCW3KfLG5Ol7o/source.gif
 // });
 
 
-
-// ---------------- SIMULATE AWAIT -----------------
-// ---------------- Async/Await (kind of) -----------------
+// resolve after 3s
 // const fetch = () => new Promise(resolve => {
 // 	const time = 3000;
-// 	console.log('fetching data...');
+// 	console.log('fetching data for 3s...');
 // 	setTimeout(()=>resolve({time}),time)
 //
 // });
 //
 // async function* dataGenerator() {
-// 	const data = yield fetch(); // yield a promise
-// 	// await data
+// 	const data = yield fetch(); // return (yield) a promise
+// 	// wait for next call
 // 	console.log('got data from server => ', data.value);
+//   emptyLines(3);
 // }
 //
-// const dataIterator = dataGenerator(); // init generator
+// const dataIterator = dataGenerator(); // iterator, no fetching yet
 // const dataPromise = dataIterator.next(); // yield promise
 //
-// dataPromise.then((data)=>handleData(data)); // await resolve
-//
-// function handleData(data){
-// 	dataIterator.next(data); // pass data back to generator => generator "awaited" data
-// }
+// dataPromise.then((data)=>{
+//   dataIterator.next(data) // pass data back to iterator
+// });
 //
 // console.log('continue execution while still fetching...');
 
 
-// ---------------- Async/Await (almost) -----------------
-
-// simulate response  latency
+// delay response for random time
 // function fetch(url, callback) {
 // 	const time = Math.random() * 2000;
 // 	setTimeout(()=>{
@@ -520,54 +517,57 @@ emptyLines(15);
 // callNext(); // kick of execution
 
 
+const timerStart = console.time;
+const timerEnd = console.timeEnd;
+const timerLabel = 'fetching of data took: ';
 
-// ------------------ Async/Await 🎉🎊------------------
-// const timerStart = console.time;
-// const timerEnd = console.timeEnd;
-// const timerLabel = 'fetching of data took: ';
-//
-// function fetch(url) {
-// 	return new Promise(resolve => {
-// 		const time = Math.random() * 2000;
-// 		setTimeout(() => {
-// 			resolve({
-// 				time,
-// 				url
-// 			})
-// 		}, time)
-// 	})
-// }
-//
-// class Async {
-// 	static awaitPromise(fromGenerator) {
-//
-// 		function callNext(iterator, withData) {
-// 			const {value: promise} = iterator.next(withData); // pass data back to generator
-// 			promise && promise.then(function chain(_data){
-// 				callNext(iterator, _data);
-// 			})
-// 		}
-//
-// 		const iterator = fromGenerator();
-// 		callNext(iterator, null);
-//
-// 	}
-// }
-//
-//
-// Async.awaitPromise(function* () {
-// 	timerStart(timerLabel);
-//
-// 	const data = yield fetch('file1');
-// 	console.log('data: ', data);
-//
-// 	const data2 = yield fetch('file2');
-// 	console.log('data2: ', data2);
-//
-// 	const data3 = yield fetch('file3');
-// 	console.log('data3: ', data3);
-// 	timerEnd(timerLabel)
-// });
-// console.log('continue execution while still fetching...');
+function fetch(url) {
+	return new Promise(resolve => {
+		const time = Math.random() * 2000;
+		setTimeout(() => {
+			resolve({
+				time,
+				url
+			})
+		}, time)
+	})
+}
+
+class Async {
+	static awaitPromises(fromGenerator) {
+
+		function callNext(iterator, withData) {
+			const {value: promise} = iterator.next(withData); // pass data back to generator
+
+      if (!promise) return;
+
+			promise.then(function chain(_data){
+			  callNext(iterator, _data); // recursion
+			})
+
+		}
+
+		const iterator = fromGenerator();
+		callNext(iterator, null); // kick of execution
+
+	}
+}
+
+
+Async.awaitPromises(function* () {
+	timerStart(timerLabel); // start execution count
+
+	const data = yield fetch('file1');
+	console.log('data: ', data);
+
+	const data2 = yield fetch('file2');
+	console.log('data2: ', data2);
+
+	const data3 = yield fetch('file3');
+	console.log('data3: ', data3);
+
+	timerEnd(timerLabel) // stop execution count
+});
+console.log('continue execution while still fetching...');
 
 emptyLines(3);
