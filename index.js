@@ -78,8 +78,9 @@ emptyLines(15);
 // 		name: 'Dimitry',
 // 	},
 //
+//
 // 	// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols
-// 	[Symbol.iterator /*@@iterator*/]: function(){
+// 	[Symbol.iterator /* iterator */]: function(){
 // 		const users = this;
 // 		const keys = Object.keys(users);
 // 		let idx = -1;
@@ -121,9 +122,13 @@ emptyLines(15);
 // console.log(userIterator.next());
 // console.log(userIterator.next());
 // console.log(userIterator.next());
-
-
-
+// console.log(userIterator.next());
+// console.log(userIterator.next());
+// console.log(userIterator.next());
+//
+//
+//
+//
 // const infiniteIterator = {
 //
 // 	value: 'I dont care about!',
@@ -156,14 +161,19 @@ emptyLines(15);
 // console.log(iterator.next());
 // console.log(iterator.next());
 // console.log(iterator.next());
+// console.log(iterator.next());
+// console.log(iterator.next());
+// console.log(iterator.next());
+
+// console.log(iterator.next());
 
 // // Cake: https://media.giphy.com/media/5eFSczxieif5BZIACm/source.gif
 // for (let value of infiniteIterator){
 // 	console.log(value)
 // }
 
-
-// function* basicGenerator(){
+//
+// function * basicGenerator(){
 // 	yield {
 // 		name: 'Peter',
 // 	};
@@ -179,8 +189,11 @@ emptyLines(15);
 // }
 //
 // const basicIterator = basicGenerator(); // implicit iterator [Symbol.iterator]()
-// // {next: ()=>{return {value: undefined, done: true}}}
-// // Similar: https://i.giphy.com/media/iGXpb2gJM3JkQXfBXv/source.gif
+// {next: ()=>{return {value: undefined, done: true}}}
+// Similar: https://i.giphy.com/media/iGXpb2gJM3JkQXfBXv/source.gif
+// console.log(basicIterator.next());
+// console.log(basicIterator.next());
+// console.log(basicIterator.next());
 // console.log(basicIterator.next());
 // console.log(basicIterator.next());
 // console.log(basicIterator.next());
@@ -191,7 +204,7 @@ emptyLines(15);
 // 	console.log(val)
 // }
 
-
+//
 // const users = {
 // 	user_1: {
 // 		name: 'Peter',
@@ -280,7 +293,6 @@ emptyLines(15);
 // }
 // const sequence = fibonacci();
 //
-//
 // for (let fibNumber of sequence){
 // 	if (fibNumber <= 13) console.log(fibNumber);
 // 	else sequence.return();
@@ -313,7 +325,6 @@ emptyLines(15);
 // };
 
 // const itr = users[Symbol.iterator]();
-//
 // console.log(itr.next());
 // console.log(itr.next());
 // console.log(itr.next());
@@ -336,7 +347,7 @@ emptyLines(15);
 // 		name: 'Dimitry',
 // 	},
 //
-// 	[Symbol.asyncIterator /*async*/]: function(){
+// 	[Symbol.asyncIterator /* @@async */]: function(){
 // 		const users = this;
 // 		const keys = Object.keys(users);
 // 		let idx = -1;
@@ -458,7 +469,7 @@ emptyLines(15);
 
 // resolve after 3s
 // const fetch = () => new Promise(resolve => {
-// 	const time = 3000;
+// 	const time = 1000;
 // 	console.log('fetching data for 3s...');
 // 	setTimeout(()=>resolve({time}),time)
 //
@@ -467,6 +478,7 @@ emptyLines(15);
 // async function* dataGenerator() {
 // 	const data = yield fetch(); // return (yield) a promise
 // 	// wait for next call
+//
 // 	console.log('got data from server => ', data.value);
 //   emptyLines(3);
 // }
@@ -475,7 +487,7 @@ emptyLines(15);
 // const dataPromise = dataIterator.next(); // yield promise
 //
 // dataPromise.then((data)=>{
-//   dataIterator.next(data) // pass data back to iterator
+//   dataIterator.next({value: 'some'}) // pass data back to iterator
 // });
 //
 // console.log('continue execution while still fetching...');
@@ -517,57 +529,57 @@ emptyLines(15);
 // callNext(); // kick of execution
 
 
-const timerStart = console.time;
-const timerEnd = console.timeEnd;
-const timerLabel = 'fetching of data took: ';
+// const timerStart = console.time;
+// const timerEnd = console.timeEnd;
+// const timerLabel = 'fetching of data took: ';
+//
+// function fetch(url) {
+// 	return new Promise(resolve => {
+// 		const time = Math.random() * 2000;
+// 		setTimeout(() => {
+// 			resolve({
+// 				time,
+// 				url
+// 			})
+// 		}, time)
+// 	})
+// }
+//
+// class Async {
+// 	static awaitPromises(fromGenerator) {
+//
+// 		function callNext(iterator, withData) {
+// 			const {value: promise} = iterator.next(withData); // pass data back to generator
+//
+//       if (!promise) return;
+//
+// 			promise.then(function chain(_data){
+// 			  callNext(iterator, _data); // recursion
+// 			})
+//
+// 		}
+//
+// 		const iterator = fromGenerator();
+// 		callNext(iterator, null); // kick of execution
+//
+// 	}
+// }
 
-function fetch(url) {
-	return new Promise(resolve => {
-		const time = Math.random() * 2000;
-		setTimeout(() => {
-			resolve({
-				time,
-				url
-			})
-		}, time)
-	})
-}
 
-class Async {
-	static awaitPromises(fromGenerator) {
-
-		function callNext(iterator, withData) {
-			const {value: promise} = iterator.next(withData); // pass data back to generator
-
-      if (!promise) return;
-
-			promise.then(function chain(_data){
-			  callNext(iterator, _data); // recursion
-			})
-
-		}
-
-		const iterator = fromGenerator();
-		callNext(iterator, null); // kick of execution
-
-	}
-}
-
-
-Async.awaitPromises(function* () {
-	timerStart(timerLabel); // start execution count
-
-	const data = yield fetch('file1');
-	console.log('data: ', data);
-
-	const data2 = yield fetch('file2');
-	console.log('data2: ', data2);
-
-	const data3 = yield fetch('file3');
-	console.log('data3: ', data3);
-
-	timerEnd(timerLabel) // stop execution count
-});
-console.log('continue execution while still fetching...');
+// Async.awaitPromises(function* () {
+// 	timerStart(timerLabel); // start execution count
+//
+// 	const data = yield fetch('file1');
+// 	console.log('data: ', data);
+//
+// 	const data2 = yield fetch('file2');
+// 	console.log('data2: ', data2);
+//
+// 	const data3 = yield fetch('file3');
+// 	console.log('data3: ', data3);
+//
+// 	timerEnd(timerLabel) // stop execution count
+// });
+// console.log('continue execution while still fetching...');
 
 emptyLines(3);
